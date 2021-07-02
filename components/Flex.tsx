@@ -11,13 +11,13 @@ type Props = {
   className?: string
 }
 const Flex: React.FC<Props> = ({
-  // direction,
+  direction,
   justify,
   align,
   children,
   className,
 }) => {
-  const { className: cls, styles } = getFlexStyle({ justify, align })
+  const { className: cls, styles } = getFlexStyle({ justify, align, direction })
   return (
     <div className={clsx(cls, className)}>
       {children}
@@ -25,10 +25,11 @@ const Flex: React.FC<Props> = ({
     </div>
   )
 }
-export const getFlexStyle = ({ justify, align }) => css.resolve`
+export const getFlexStyle = ({ justify, align, direction }) => css.resolve`
   display: flex;
   ${justify ? `justify-content: ${justify}` : ''};
   ${align ? `align-items: ${align}` : ''};
+  ${direction ? `flex-direction: ${direction}` : ''};
 `
 type ClassNameType = {
   className?: string
