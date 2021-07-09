@@ -17,7 +17,7 @@ const Orbits: React.FC<Props> = () => {
     <article className="container">
       <Canvas camera={{ position: [-5, 5, 5] }}>
         <ambientLight args={[0xff0000]} intensity={0.5} />
-        <Box args={[5, 5, 5]} />
+        <Box size={[5, 5, 5]} />
         <OrbitControls enableDamping dampingFactor={0.2} />
         <gridHelper args={[30, 30, 30]} />
       </Canvas>

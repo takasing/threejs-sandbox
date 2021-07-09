@@ -17,7 +17,7 @@ const Fly: React.FC<Props> = () => {
       <Flex className={canvasStyle.className}>
         <Canvas camera={{ position: [-5, 5, 5] }}>
           <ambientLight args={[0xff0000]} intensity={0.5} />
-          <Box args={[5, 5, 5]} />
+          <Box size={[5, 5, 5]} />
           <FlyControls movementSpeed={10} dragToLook />
           <gridHelper args={[30, 30, 30]} />
         </Canvas>
