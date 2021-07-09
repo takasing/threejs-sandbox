@@ -5,6 +5,7 @@ import css from 'styled-jsx/css'
 import {
   CameraHelper,
   Mesh,
+  MeshPhongMaterial,
   PerspectiveCamera,
   Raycaster,
   Vector3,
@@ -61,9 +62,10 @@ const CustomRaycaster = () => {
     const intersects = raycaster.intersectObjects(scene.children)
     meshList.map((mesh) => {
       if (intersects.length > 0 && mesh === intersects[0].object) {
-        ;(mesh as Mesh).material.color.set(0x000000)
+        // @types/threeでmaterialがおかしい？
+        ;((mesh as Mesh).material as MeshPhongMaterial).color.set(0x000000)
       } else {
-        ;(mesh as Mesh).material.color.set(0xff0000)
+        ;((mesh as Mesh).material as MeshPhongMaterial).color.set(0xff0000)
       }
     })
     // TODO: ライトが接触したやつに色つけたい！
