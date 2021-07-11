@@ -1,10 +1,13 @@
 import { Canvas } from '@react-three/fiber'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import css from 'styled-jsx/css'
+import { Vector3 } from 'three'
 import Flex from '../../components/Flex'
 import Box from '../../projects/Box'
-import Camera, { Angle } from '../../projects/Camera'
+import Camera from '../../projects/Camera'
 
+const farPosition = new Vector3(0, 10, 0)
+const nearPosition = new Vector3(0, 0, 10)
 type Props = {
   className?: string
 }
@@ -13,19 +16,26 @@ type Props = {
  * @returns
  */
 const Switch: React.FC<Props> = () => {
-  const [angle, setAngle] = useState<Angle>('horizontal')
+  const [position, setPosition] = useState(farPosition)
+  const [isFar, setFar] = useState(true)
+  const handlePosition = () => {
+    setFar(!isFar)
+  }
+  useEffect(() => {
+    isFar ? setPosition(farPosition) : setPosition(nearPosition)
+  }, [isFar])
   return (
     <article className="container">
       <Flex className={canvasStyle.className}>
         <Canvas>
-          <Camera angle={angle} />
+          <Camera position={position} />
           <ambientLight args={[0xff0000]} intensity={0.5} />
           <Box size={[5, 5, 5]} />
           <gridHelper args={[30, 30, 30]} />
         </Canvas>
         <section>
-          <button onClick={() => setAngle('vertical')}>vertical</button>
-          <button onClick={() => setAngle('horizontal')}>horizontal</button>
+          <button onClick={handlePosition}>vertical</button>
+          <button onClick={handlePosition}>horizontal</button>
         </section>
       </Flex>
 

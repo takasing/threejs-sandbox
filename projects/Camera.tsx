@@ -1,22 +1,15 @@
-import { useFrame, useThree } from '@react-three/fiber'
-import { Vector3 } from 'three'
+import { PerspectiveCameraProps, useFrame } from '@react-three/fiber'
+import { forwardRef } from 'react'
+import { PerspectiveCamera, Vector3 } from 'three'
 
-export type Angle = 'vertical' | 'horizontal'
-type Props = {
-  angle: Angle
+type Props = PerspectiveCameraProps & {
+  position: Vector3
 }
-const Camera: React.FC<Props> = ({ angle }) => {
-  const vec = new Vector3()
-  const { camera } = useThree()
-  useFrame(() => {
-    if (angle === 'vertical') {
-      camera.position.lerp(vec.set(0, 10, 10), 0.05)
-    }
-    if (angle === 'horizontal') {
-      camera.position.lerp(vec.set(0, 0, 10), 0.3)
-    }
+const Camera = forwardRef<PerspectiveCamera, Props>(({ position }, ref) => {
+  useFrame(({ camera }) => {
+    camera.position.lerp(position, 0.05)
     camera.lookAt(0, 0, 0)
   })
-  return <perspectiveCamera />
-}
+  return <perspectiveCamera ref={ref} />
+})
 export default Camera
