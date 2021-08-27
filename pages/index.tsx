@@ -11,7 +11,58 @@ export const Home = (): JSX.Element => (
 
     <main>
       <h1 className="title">Three.js SANDBOX</h1>
-      <Link href="/light/ambient">ambient light</Link>
+      <section>
+        <h2>Camera</h2>
+        <ul>
+          <li>
+            <Link href="/camera/switch">Camera:switch</Link>
+          </li>
+          <li>
+            <Link href="/camera/auto-range">Camera:auto range</Link>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Controls</h2>
+        <ul>
+          <li>
+            <Link href="/controls/fly">Controls:fly</Link>
+          </li>
+          <li>
+            <Link href="/controls/orbit">Controls:orbit</Link>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Light</h2>
+        <ul>
+          <li>
+            <Link href="/light/ambient">Light:ambient</Link>
+          </li>
+          <li>
+            <Link href="/light/point">Light:point</Link>
+          </li>
+          <li>
+            <Link href="/light/spot">Light:spot</Link>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Model</h2>
+        <ul>
+          <li>
+            <Link href="/models/robot">Model:robot</Link>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2>Raycast</h2>
+        <ul>
+          <li>
+            <Link href="/raycast">Raycast</Link>
+          </li>
+        </ul>
+      </section>
     </main>
 
     <footer>
