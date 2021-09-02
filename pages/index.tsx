@@ -20,6 +20,9 @@ export const Home = (): JSX.Element => (
           <li>
             <Link href="/camera/auto-range">Camera:auto range</Link>
           </li>
+          <li>
+            <Link href="/camera/perspective">Camera:perspective</Link>
+          </li>
         </ul>
       </section>
       <section>
