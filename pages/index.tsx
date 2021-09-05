@@ -59,6 +59,14 @@ export const Home = (): JSX.Element => (
         </ul>
       </section>
       <section>
+        <h2>Projection</h2>
+        <ul>
+          <li>
+            <Link href="/projection">Projection</Link>
+          </li>
+        </ul>
+      </section>
+      <section>
         <h2>Raycast</h2>
         <ul>
           <li>

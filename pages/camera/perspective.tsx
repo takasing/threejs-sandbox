@@ -1,11 +1,12 @@
 import { OrbitControls } from '@react-three/drei'
-import { Canvas, MeshProps, useFrame } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { forwardRef, useRef } from 'react'
-import { Mesh, PerspectiveCamera, Vector3 } from 'three'
+import { PerspectiveCamera, Vector3 } from 'three'
 import Flex from '../../components/Flex'
 import css from 'styled-jsx/css'
 import { useControls } from 'leva'
 import Camera, { CameraProps } from '../../projects/Camera'
+import Sphere from '../../projects/Sphere'
 
 type Props = {
   className?: string
@@ -26,7 +27,6 @@ const Perspective: React.FC<Props> = () => {
           <WrappedCamera />
         </Canvas>
       </Flex>
-      <section className={controlsStyle.className}></section>
       <style jsx>{`
         .container {
           height: 100vh;
@@ -91,34 +91,6 @@ const WrappedCamera = forwardRef<typeof Camera, CameraProps>(() => {
       near={near}
       far={far}
     />
-  )
-})
-
-const Sphere = forwardRef<Mesh, MeshProps>((props, ref) => {
-  const local = useRef<Mesh>(null)
-  useFrame(() => {
-    // type ForwardedRef<T> = ((instance: T | null) => void) | MutableRefObject<T | null> | null;
-    // ↑これに対応
-    // https://stackoverflow.com/a/62238917
-    if (typeof ref === 'function') {
-      ref(local.current)
-    } else if (ref) {
-      // Use ref
-    }
-  })
-  const applyRef = (node: Mesh) => {
-    local.current = node
-    if (typeof ref === 'function') {
-      ref(node)
-    } else if (ref) {
-      ref.current = node
-    }
-  }
-  return (
-    <mesh ref={applyRef} {...props}>
-      <sphereGeometry args={[1, 32, 16]} />
-      <meshPhongMaterial color={0xffff00} />
-    </mesh>
   )
 })
 

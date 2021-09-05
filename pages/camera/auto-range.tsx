@@ -3,14 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import Flex from '../../components/Flex'
 import css from 'styled-jsx/css'
 import { forwardRef, MutableRefObject, useRef } from 'react'
-import {
-  BufferGeometry,
-  Material,
-  Mesh,
-  PerspectiveCamera,
-  Vector3,
-} from 'three'
-import { degToRad } from 'three/src/math/MathUtils'
+import { BufferGeometry, Material, Mesh, PerspectiveCamera } from 'three'
+import { CameraController } from './CameraController'
 
 type Props = {
   className?: string
@@ -53,59 +47,12 @@ type AdjustableCameraProps = {
 const AdjustableCamera: React.FC<AdjustableCameraProps> = ({ meshes }) => {
   const ref = useRef()
   useFrame(({ camera }) => {
-    const ay0 = Math.tan(degToRad((camera as PerspectiveCamera).fov * 0.5))
-    const ay1 = -ay0
-    const ax0 = ay0 * (camera as PerspectiveCamera).aspect
-    const ax1 = -ax0
-    let yMin = 0
-    let yMax = 0
-    let xMin = 0
-    let xMax = 0
+    const { position, lookAt } = CameraController(
+      camera as PerspectiveCamera
+    ).fitByMove(meshes.map((m) => m.current))
 
-    // const localSpheres = worldToLocals(camera.position, meshes.map(m => m.current))
-    const localSpheres = meshes.map(
-      (m) =>
-        // m.current.worldToLocal(camera.position)
-        m.current.position
-    )
-
-    for (let i = 0; i < localSpheres.length; i++) {
-      const m = localSpheres[i]
-      if (!m) {
-        continue
-      }
-
-      const y0 = m.y - ay0 * m.z
-      const y1 = m.y - ay1 * m.z
-      const x0 = m.x - ax0 * m.z
-      const x1 = m.x - ax1 * m.z
-      yMin = Math.min(yMin, y0)
-      yMax = Math.max(yMax, y1)
-      xMin = Math.min(xMin, x0)
-      xMax = Math.max(xMax, x1)
-    }
-    // console.log(yMax, yMin, xMax, xMin)
-
-    const zy = (yMax - yMin) / (ay0 - ay1)
-    const y = yMin + ay0 * zy
-    const zx = (xMax - xMin) / (ax0 - ax1)
-    const x = xMin + ax0 * zx
-
-    // 大枠の調整はここではない
-    // FIXME: 何故かy,z=0
-    // camera.position.set(x, y + 5, Math.min(zy, zx))
-    const localPos = new Vector3(
-      buffer(x, 3),
-      buffer(y, 3),
-      buffer(Math.min(zy, zx), 10)
-    )
-    // const newWorldCam = camera.localToWorld(localPos)
-    // console.log(localPos, newWorldCam)
-
-    camera.position.set(localPos.x, localPos.y, localPos.z)
-    // camera.position.set(newWorldCam.x, newWorldCam.y, newWorldCam.z)
-    camera.lookAt(0, 0, 0)
-    // console.log('cam pos', camera.position)
+    camera.position.set(position.x, position.y, position.z)
+    camera.lookAt(lookAt)
   })
   return <perspectiveCamera ref={ref} near={0.01} fov={30} />
 }
@@ -149,7 +96,4 @@ const MovingSphere = forwardRef<Mesh, MovingSphereProps>(
   }
 )
 
-const buffer = (x: number, buf: number) => {
-  return x > 0 ? x + buf : x < 0 ? x - buf : x
-}
 export default AutoRange
